@@ -1,5 +1,7 @@
 import { S3 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
+import { toast } from "react-toastify";
+
 
 const AWS_REGION = "us-east-2";
 
@@ -54,6 +56,9 @@ export async function uploadToS3(
       file_name: file.name,
     };
   } catch (error) {
+    toast.error(
+      "Failed to upload file. Try again or upload a different file. "
+    );
     console.error("Error uploading file: ", error);
     throw new Error("Failed to upload file to S3");
   }

@@ -6,8 +6,10 @@ import { Inbox, Loader2 } from "lucide-react";
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const FileUpload = () => {
+  const router = useRouter();
   const [uploading, setUploading] = React.useState(false);
 
   const { mutate, isPending } = useMutation({
@@ -30,7 +32,6 @@ const FileUpload = () => {
     accept: { "application/pdf": [".pdf"] },
     maxFiles: 1,
     onDrop: (uploadedPdf) => {
-      console.log(uploadedPdf);
       const file = uploadedPdf[0];
       if (file.size > 10 * 1024 * 1024) {
         toast.error("File too large! Please upload a smaller file.");
@@ -48,8 +49,10 @@ const FileUpload = () => {
                 file_name: uploadedFile.file_name,
               },
               {
-                onSuccess: (data) => {
-                  toast.success(data.message);
+                onSuccess: ({ chat_id }) => {
+                  console.log("chat created", chat_id);
+                  toast.success("Chat created");
+                  router.push(`/chat/${chat_id}`);
                 },
                 onError: (error) => {
                   toast.error("Sorry, there was an error creating chat");
