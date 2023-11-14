@@ -19,9 +19,12 @@ export const chats = pgTable("chats", {
   fileKey: text("file_key").notNull(),
 });
 
+export type DrizzleChat = typeof chats.$inferSelect;
+
 export const messages = pgTable("messages", {
   id: serial("id").primaryKey(),
-  chatId: integer("chat_id").references(() => chats.id),
+  chatId: integer("chat_id").references(() => chats.id).notNull(),
+  content: text("content").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   role: userSystemEnum("role").notNull(),
 });

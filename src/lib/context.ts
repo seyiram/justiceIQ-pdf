@@ -13,8 +13,9 @@ export async function getMatchesFromEmbeddings(
       apiKey: process.env.NEXT_PUBLIC_PINECONE_API_KEY!,
     });
     const pineconeIndex = client.Index("justiceiq");
-    const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
-    const queryResult = await namespace.query({
+    // unable to use namespace in pinecone gcp-starter
+    // const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
+    const queryResult = await pineconeIndex.query({
       topK: 5,
       vector: embeddings,
       includeMetadata: true,
